@@ -5,9 +5,26 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <style>
+    .container {
+      display: flex;
+    }
+
+    .container > div {
+      width: 50%;
+      border: 1px solid #ccc;
+    }
+  </style>
 </head>
 <body>
-  <div>Hello TypeScript</div>
+  <div class="container">
+    <div class="ot-json">
+      <h1>OT JSON 测试</h1>
+    </div>
+    <div class="yjs">
+      <h1>yjs 测试</h1>
+    </div>
+  </div>
 
   <script src="./out/index.js"></script>
 </body>

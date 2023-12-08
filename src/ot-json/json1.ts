@@ -12,7 +12,7 @@ const insertOp = json1.insertOp(['blocks', 0, 'key'], 'value');
 const doc1 = json1.type.apply(doc, insertOp);
 console.log('insert: ', doc1);
 
-console.log('before: ',doc)
+console.log('before: ', doc);
 const moveOp = json1.moveOp(['blocks', 0, 'children', 1], ['blocks', 0, 'map', 'id1', 'children', 0]);
 const doc2 = json1.type.apply(doc, moveOp);
 console.log('move: ', doc2);
