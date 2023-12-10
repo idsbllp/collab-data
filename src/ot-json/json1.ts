@@ -20,7 +20,7 @@ type Snapshot = {
 
 let doc = {} as Snapshot;
 
-const otContainer = document.querySelector('.ot-json') as HTMLElement;
+const container = document.querySelector('.ot-json') as HTMLElement;
 
 function getTestJSON(blockType: string, index: number) {
   return { type: blockType, id: String(index).repeat(10), map: { [`test_${index}`]: `value_${index}` } }
@@ -28,7 +28,7 @@ function getTestJSON(blockType: string, index: number) {
 
 function testInsertObject() {
   addTest({
-    ele: otContainer,
+    ele: container,
     type: TestType.InsertObject,
     fn: index => {
       const insertOp = json1.insertOp(['object', uuidv4()], { [`test_${index}`]: `value_${index}` });
@@ -42,7 +42,7 @@ function testInsertObject() {
 function testInsertList() {
   const blockLength = doc.blocks.length;
   addTest({
-    ele: otContainer,
+    ele: container,
     type: TestType.InsertList,
     fn: index => {
       const insertOp = json1.insertOp(['blocks', blockLength + index], getTestJSON('text', index));
@@ -55,7 +55,7 @@ function testInsertList() {
 function testMove() {
   const max = doc.blocks.length - 1;
   addTest({
-    ele: otContainer,
+    ele: container,
     type: TestType.Move,
     fn: () => {
       const from = getRandom(max);
@@ -71,7 +71,7 @@ function testMove() {
 function testUpdate() {
   const max = doc.blocks.length - 1;
   addTest({
-    ele: otContainer,
+    ele: container,
     type: TestType.Update,
     fn: () => {
       const index = getRandom(max);
@@ -90,7 +90,7 @@ function testRemoveObject() {
   const max = keys.length - 1;
 
   addTest({
-    ele: otContainer,
+    ele: container,
     type: TestType.RemoveObject,
     fn: index => {
       const removeOp = json1.removeOp(['object', keys[max - index]]);
@@ -105,7 +105,7 @@ function testRemoveList() {
   const max = doc.blocks.length - 1;
 
   addTest({
-    ele: otContainer,
+    ele: container,
     type: TestType.RemoveList,
     fn: index => {
       const removeOp = json1.removeOp(['blocks', max - index]);
@@ -119,7 +119,7 @@ function testRemoveList() {
 function test(snapshot: Snapshot) {
   doc = snapshot;
 
-  insertHeading(otContainer, doc.type, 2);
+  insertHeading(container, doc.type, 2);
   testInsertObject();
   testInsertList();
   testMove();
@@ -128,8 +128,11 @@ function test(snapshot: Snapshot) {
   testRemoveList();
 }
 
+console.log('ot json 1 ===================== 开始');
+
 test(snapshotSmall);
 test(snapshotMiddle);
 // test(snapshotMiddle);
 // test(snapshotMiddle);
 // test(snapshotMiddle);
+console.log('ot json 1 ===================== 结束');
