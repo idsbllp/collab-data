@@ -1,4 +1,6 @@
 export const snapshot = {
+    type: '小型文档',
+    object: {},
     blocks: [{
         type: 'page',
         id: '111',

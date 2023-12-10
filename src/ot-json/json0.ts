@@ -2,7 +2,7 @@
 
 // @ts-expect-error
 import json0 from 'ot-json0';
-import { snapshot as OtSnapshot } from './data/ot-snapshot-simple';
+import { snapshot as OtSnapshot } from './data/ot-snapshot-small';
 
 console.log('ot json 0 ===================== 开始');
 

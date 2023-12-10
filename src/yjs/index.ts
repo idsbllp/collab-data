@@ -51,5 +51,4 @@ testText.insert(0,'test1');
 testText.delete(2, 1);
 console.log('update: ',Y.decodeUpdate(Y.encodeStateAsUpdate(testDoc)));
 
-
 export {};
