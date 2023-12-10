@@ -4,6 +4,7 @@ import json1 from 'ot-json1';
 import { v4 as uuidv4 } from 'uuid';
 import { get } from 'lodash-es';
 import { snapshot as snapshotSmall } from './data/ot-snapshot-small';
+import { snapshot as snapshotMiddle } from './data/ot-snapshot-middle';
 import { insertHeading } from 'src/utils/dom';
 import { TestType, addTest, getRandom } from 'src/utils';
 
@@ -17,19 +18,7 @@ type Snapshot = {
   }[];
 }
 
-let doc = snapshotSmall as Snapshot;
-
-// console.log('ot json 1 ===================== 开始');
-// const insertOp = json1.insertOp(['blocks', 0, 'key'], 'value');
-// const doc1 = json1.type.apply(doc, insertOp);
-// console.log('insert: ', doc1);
-
-// console.log('before: ', doc);
-// const moveOp = json1.moveOp(['blocks', 0, 'children', 1], ['blocks', 0, 'map', 'id1', 'children', 0]);
-// const doc2 = json1.type.apply(doc, moveOp);
-// console.log('move: ', doc2);
-// console.log('ot json 1 ===================== 结束');
-
+let doc = {} as Snapshot;
 
 const otContainer = document.querySelector('.ot-json') as HTMLElement;
 
@@ -128,7 +117,9 @@ function testRemoveList() {
 }
 
 function test(snapshot: Snapshot) {
-  insertHeading(otContainer, snapshot.type, 2);
+  doc = snapshot;
+
+  insertHeading(otContainer, doc.type, 2);
   testInsertObject();
   testInsertList();
   testMove();
@@ -138,3 +129,7 @@ function test(snapshot: Snapshot) {
 }
 
 test(snapshotSmall);
+test(snapshotMiddle);
+// test(snapshotMiddle);
+// test(snapshotMiddle);
+// test(snapshotMiddle);
