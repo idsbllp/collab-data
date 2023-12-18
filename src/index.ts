@@ -1,4 +1,4 @@
-import './yjs';
+// import './yjs';
 
 
 import './ot-json';

@@ -12,34 +12,38 @@ export enum TestType {
 interface TestProps {
   ele: HTMLElement;
   type: TestType,
-  fn: (index: number) => void;
+  fn: (ops: any) => void;
+  getOps: (index: number, prevOp: any) => void;
 }
 
 const testCount = 4000;
 
 export function addTest(props: TestProps) {
-  const { ele, type, fn } = props;
+  const { ele, type, fn, getOps } = props;
   insertHeading(ele, `测试${type} ${testCount} 次耗时`, 3);
   let hasError = null;
 
-  const start = performance.now();
-  for (let index = 0; index < testCount; index++) {
-    try {
-      fn(index);
-    } catch (err) {
-      console.error(index, err);
-      console.error(index, err);
-      console.error(index, err);
-      hasError = err;
+  let duration = 0;
+  try {
+    let prevOp = null;
+    for (let index = 0; index < testCount; index++) {
+      prevOp = getOps(index, prevOp);
     }
-  }
-  const end = performance.now();
+    const start = performance.now();
+    fn(prevOp);
+    const end = performance.now();
 
+    duration = end - start;
+  } catch (err) {
+    console.error(err);
+    hasError = err;
+  }
+  
   let text;
   if (hasError) {
     text = `${type} 报错了： ${hasError}`;
   } else {
-    text = `${type} ${testCount} 次 op 耗时： ${(end - start).toFixed(5)}ms`;
+    text = `${type} ${testCount} 次 op 耗时： ${(duration).toFixed(5)}ms`;
   }
   insertP(ele, text);
 }

@@ -30,10 +30,13 @@ function testInsertObject() {
   addTest({
     ele: container,
     type: TestType.InsertObject,
-    fn: index => {
+    fn: ops => {
+      doc = json1.type.apply(doc, ops) as Snapshot;
+    },
+    getOps: (index, prevOp) => {
       const insertOp = json1.insertOp(['object', uuidv4()], { [`test_${index}`]: `value_${index}` });
-      doc = json1.type.apply(doc, insertOp) as Snapshot;
-    }
+      return json1.type.compose(prevOp, insertOp);
+    },
   });
 
   console.log(`logllp ${TestType.InsertObject} 后的 doc: `, doc);
@@ -120,12 +123,13 @@ function test(snapshot: Snapshot) {
   doc = snapshot;
 
   insertHeading(container, doc.type, 2);
+
   testInsertObject();
-  testInsertList();
-  testMove();
-  testUpdate();
-  testRemoveObject();
-  testRemoveList();
+  // testInsertList();
+  // testMove();
+  // testUpdate();
+  // testRemoveObject();
+  // testRemoveList();
 }
 
 console.log('ot json 1 ===================== 开始');
