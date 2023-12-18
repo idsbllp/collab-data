@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { get } from 'lodash-es';
 import { snapshot as snapshotSmall } from './data/ot-snapshot-small';
 import { snapshot as snapshotMiddle } from './data/ot-snapshot-middle';
+import { snapshot as snapshotBig } from './data/ot-snapshot-big';
 import { insertHeading } from 'src/utils/dom';
 import { TestType, addTest, getRandom } from 'src/utils';
 
@@ -101,6 +102,58 @@ function testRemoveObject() {
   console.log(`logllp ${TestType.RemoveObject} 后的 doc: `, doc);
 }
 
+function testInsertBigObject(object: Record<string, any>) {
+  addTest({
+    ele: container,
+    type: TestType.InsertBigObject,
+    once: () => {
+      const insertOp = json1.insertOp(['bigObject'], object);
+      doc = json1.type.apply(doc, insertOp) as Snapshot;
+    }
+  });
+
+  console.log(`logllp ${TestType.InsertBigObject} 后的 doc: `, doc);
+}
+
+function testRemoveBigObject() {
+  addTest({
+    ele: container,
+    type: TestType.RemoveBigObject,
+    once: () => {
+      const removeOp = json1.removeOp(['bigObject']);
+      doc = json1.type.apply(doc, removeOp) as Snapshot;
+    }
+  });
+
+  console.log(`logllp ${TestType.RemoveBigObject} 后的 doc: `, doc);
+}
+
+function testInsertBigList(list: Record<string, any>[]) {
+  addTest({
+    ele: container,
+    type: TestType.InsertBigList,
+    once: () => {
+      const insertOp = json1.insertOp(['bigBlocks'], list);
+      doc = json1.type.apply(doc, insertOp) as Snapshot;
+    }
+  });
+
+  console.log(`logllp ${TestType.InsertBigList} 后的 doc: `, doc);
+}
+
+function testRemoveBigList() {
+  addTest({
+    ele: container,
+    type: TestType.RemoveBigList,
+    once: () => {
+      const removeOp = json1.removeOp(['bigBlocks']);
+      doc = json1.type.apply(doc, removeOp) as Snapshot;
+    }
+  });
+
+  console.log(`logllp ${TestType.RemoveBigList} 后的 doc: `, doc);
+}
+
 function testRemoveList() {
   const max = doc.blocks.length - 1;
 
@@ -122,8 +175,17 @@ function test(snapshot: Snapshot) {
   insertHeading(container, doc.type, 2);
   testInsertObject();
   testInsertList();
+  const object = doc.object;
+  const list = doc.blocks;
   testMove();
   testUpdate();
+
+  testInsertBigObject(object);
+  testRemoveBigObject();
+
+  testInsertBigList(list);
+  testRemoveBigList();
+
   testRemoveObject();
   testRemoveList();
 }
@@ -131,8 +193,8 @@ function test(snapshot: Snapshot) {
 console.log('ot json 1 ===================== 开始');
 
 test(snapshotSmall);
+console.log('ot json 1 ===================== 分隔符');
 test(snapshotMiddle);
-// test(snapshotMiddle);
-// test(snapshotMiddle);
-// test(snapshotMiddle);
+console.log('ot json 1 ===================== 分隔符');
+test(snapshotBig);
 console.log('ot json 1 ===================== 结束');

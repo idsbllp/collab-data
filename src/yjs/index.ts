@@ -6,6 +6,8 @@ import { TestType, addTest, getRandom } from 'src/utils';
 
 import { initDoc as initDocSmall } from './data/small';
 
+(window as any).Y = Y;
+
 let doc = initDocSmall();
 
 const container = document.querySelector('.yjs') as HTMLElement;
@@ -78,6 +80,58 @@ function testUpdate() {
   console.log(`logllp ${TestType.Update} 后的 doc: `, doc.getMap('map').toJSON());
 }
 
+function testInsertBigObject(object: Record<string, any>) {
+  addTest({
+    ele: container,
+    type: TestType.InsertBigObject,
+    once: () => {
+      const map = doc.getMap('map');
+      map.set('bigOject', object);
+    }
+  });
+
+  console.log(`logllp ${TestType.InsertBigObject} 后的 doc: `, doc.getMap('map').toJSON());
+}
+
+function testRemoveBigObject() {
+  addTest({
+    ele: container,
+    type: TestType.RemoveBigObject,
+    once: () => {
+      const object = doc.getMap('map');
+      object.delete('bigOject');
+    }
+  });
+
+  console.log(`logllp ${TestType.RemoveBigObject} 后的 doc: `, doc.getMap('map').toJSON());
+}
+
+function testInsertBigList(array: Record<string, any>[]) {
+  addTest({
+    ele: container,
+    type: TestType.InsertBigList,
+    once: () => {
+      const map = doc.getMap('map');
+      map.set('bigArray', array);
+    }
+  });
+
+  console.log(`logllp ${TestType.InsertBigList} 后的 doc: `, doc.getMap('map').toJSON());
+}
+
+function testRemoveBigList() {
+  addTest({
+    ele: container,
+    type: TestType.RemoveBigList,
+    once: () => {
+      const object = doc.getMap('map');
+      object.delete('bigArray');
+    }
+  });
+
+  console.log(`logllp ${TestType.RemoveBigList} 后的 doc: `, doc.getMap('map').toJSON());
+}
+
 function testRemoveObject() {
   const object = doc.getMap('map').get('object') as Y.Map<any>;
   const keys = object.keys();
@@ -109,19 +163,30 @@ function testRemoveList() {
   console.log(`logllp ${TestType.RemoveList} 后的 doc: `, doc.getMap('map').toJSON());
 }
 
-function test(doc: Y.Doc) {
+function test() {
   insertHeading(container, doc.getMap('map').get('type') as string, 2);
   testInsertObject();
   testInsertList();
+  const object = (doc.getMap('map').get('object') as Y.Map<any>).toJSON();
+  const list = (doc.getMap('map').get('array') as Y.Array<any>).toArray();
+
   testMove();
   testUpdate();
+
+  testInsertBigObject(object);
+  testRemoveBigObject();
+
+  testInsertBigList(list);
+  testRemoveBigList();
+  
   testRemoveObject();
   testRemoveList();
 }
 
 console.log('ot yjs ===================== 开始');
 
-test(doc);
+(window as any).yjsDoc = doc;
+test();
 // test(snapshotMiddle);
 // test(snapshotMiddle);
 // test(snapshotMiddle);
