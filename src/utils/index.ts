@@ -15,13 +15,15 @@ interface TestProps {
   fn: (index: number) => void;
 }
 
+const testCount = 4000;
+
 export function addTest(props: TestProps) {
   const { ele, type, fn } = props;
-  insertHeading(ele, `测试${type} 100 次 性能`, 3);
+  insertHeading(ele, `测试${type} ${testCount} 次耗时`, 3);
   let hasError = null;
 
   const start = performance.now();
-  for (let index = 0; index < 100; index++) {
+  for (let index = 0; index < testCount; index++) {
     try {
       fn(index);
     } catch (err) {
@@ -37,7 +39,7 @@ export function addTest(props: TestProps) {
   if (hasError) {
     text = `${type} 报错了： ${hasError}`;
   } else {
-    text = `${type} 100 次 op 耗时： ${(end - start).toFixed(5)}ms`;
+    text = `${type} ${testCount} 次 op 耗时： ${(end - start).toFixed(5)}ms`;
   }
   insertP(ele, text);
 }

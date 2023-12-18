@@ -113,9 +113,8 @@ function test(doc: Y.Doc) {
   insertHeading(container, doc.getMap('map').get('type') as string, 2);
   testInsertObject();
   testInsertList();
-  testUpdate();
-  testUpdate();
   testMove();
+  testUpdate();
   testRemoveObject();
   testRemoveList();
 }

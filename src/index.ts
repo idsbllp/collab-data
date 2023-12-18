@@ -1,3 +1,5 @@
+import './yjs';
+
+
 import './ot-json';
 
-import './yjs';
